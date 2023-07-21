@@ -1,0 +1,15 @@
+{
+    "$schema": "https://json.schemastore.org/tsconfig",
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "lib": ["ES2015", "ES2016", "ES2017", "ES2018", "ESNext"],
+        "module": "CommonJS",
+        "moduleResolution": "Node",
+        "outDir": "lib",
+        "skipLibCheck": true,
+        "strictNullChecks": true,
+        "target": "ES2022"
+    },
+    "include": ["src"]
+}
