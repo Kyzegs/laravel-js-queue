@@ -1,6 +1,6 @@
 {
   "name": "laravel-queues",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "",
   "main": "lib/cjs/index.js",
   "typings": "lib/typings/index.d.ts",
@@ -20,7 +20,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Kyzegs/laravel-js-queue.git"
+    "url": "git+https://github.com/Kyzegs/laravel-queues.git"
   },
   "files": [
     "lib/*"

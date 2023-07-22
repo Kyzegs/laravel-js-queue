@@ -5,9 +5,9 @@ Create jobs for your Laravel application using JavaScript and TypeScript.
 ## Install
 
 ```bash
-npm install laravel-js-queue # npm
-yarn add laravel-js-queue # Yarn
-pnpm add laravel-js-queue # pnpm
+npm install laravel-queues # npm
+yarn add laravel-queues # Yarn
+pnpm add laravel-queues # pnpm
 ```
 
 ## Usage
@@ -30,7 +30,7 @@ class Ping implements ShouldQueue
 ```
 
 ```ts
-import { Queue, Job } from 'laravel-js-queue';
+import { Queue, Job } from 'laravel-queues';
 
 const queue = new Queue();
 const job = new Job({
@@ -66,7 +66,7 @@ class Country implements ShouldQueue
 ```
 
 ```ts
-import { Queue, Job } from 'laravel-js-queue';
+import { Queue, Job } from 'laravel-queues';
 
 const queue = new Queue();
 const job = new Job({
@@ -105,7 +105,7 @@ class AssignRole implements ShouldQueue
 ```
 
 ```ts
-import { Queue, Job, Model } from 'laravel-js-queue';
+import { Queue, Job, Model } from 'laravel-queues';
 
 const queue = new Queue();
 const job = new Job({
@@ -124,13 +124,13 @@ queue.dispatch(job);
 ### Connection options
 
 ```ts
-import { Queue } from 'laravel-js-queue';
+import { Queue } from 'laravel-queues';
 
 const queue = new Queue({
-    appName: 'laravel-js-queue',
+    appName: 'laravel-queues',
     connection: {
         username: 'root',
-        password: 'laravel-js-queue',
+        password: 'laravel-queues',
         socket: {
             host: 'localhost',
             port: 6379,
