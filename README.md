@@ -12,7 +12,7 @@ pnpm add laravel-js-queue # pnpm
 
 ## Usage
 
-### Basic job dispatch
+### Basic dispatch
 
 ```php
 class Ping implements ShouldQueue
@@ -40,7 +40,7 @@ const job = new Job({
 queue.dispatch(job);
 ```
 
-### Job dispatching with data
+### Dispatching with data
 
 ```php
 class Country implements ShouldQueue
@@ -73,6 +73,48 @@ const job = new Job({
     name: 'Country',
     data: {
         country: 'NL',
+    },
+});
+
+queue.dispatch(job);
+```
+
+### Dispatching with model
+
+```php
+class AssignRole implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    /**
+     * Create a new job instance.
+     */
+    public function __construct(
+        public Role $role,
+    ) {}
+
+    /**
+     * Execute the job.
+     */
+    public function handle(): void
+    {
+        // Give role to user
+        echo $this->role;
+    }
+}
+```
+
+```ts
+import { Queue, Job, Model } from 'laravel-js-queue';
+
+const queue = new Queue();
+const job = new Job({
+    name: 'AssignRole',
+    data: {
+        role: new Model({
+            class: 'Spatie\\Permission\\Models\\Role',
+            id: 1,
+        }),
     },
 });
 

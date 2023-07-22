@@ -1,5 +1,6 @@
 import {serialize} from 'php-serialize';
 import ObjectMock from './object';
+import Model from './model';
 
 export type JobOptions = {
 	name: string;
@@ -33,6 +34,8 @@ class Job {
 	public getCommand(): string {
 		return serialize(new ObjectMock(this.data), {
 			[this.getCommandName()]: ObjectMock,
+			// eslint-disable-next-line @typescript-eslint/naming-convention
+			'Illuminate\\Contracts\\Database\\ModelIdentifier': Model,
 		});
 	}
 }
