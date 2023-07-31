@@ -32,7 +32,7 @@ class Queue {
 			...options,
 		};
 
-		this.appName = args.appName;
+		this.appName = args.appName.toLowerCase();
 		this.prefix = args.prefix;
 		this.queue = args.queue;
 		this.client = createClient(args.connection);
