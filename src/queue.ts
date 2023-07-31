@@ -1,59 +1,75 @@
-import {createClient, type RedisClientOptions} from 'redis';
+import {type RedisClientOptions} from 'redis';
 import {v4 as uuidv4} from 'uuid';
 import type Job from './job';
+import {type DataSourceOptions} from 'typeorm';
+import Redis from './drivers/redis';
+import Database from './drivers/database';
+
+export type Driver =
+	| {
+		type: 'database';
+		options: DataSourceOptions;
+		prefix: never;
+	}
+	| {
+		type: 'redis';
+		options?: RedisClientOptions;
+		prefix?: string;
+	};
 
 export type QueueOptions = {
 	appName?: string;
-	prefix?: string;
 	queue?: string;
-	connection?: RedisClientOptions;
+	driver?: Driver;
 };
 
 class Queue {
 	appName: string;
 
-	prefix: string;
-
 	queue: string;
 
-	client: ReturnType<typeof createClient>;
+	driver: Database | Redis;
 
 	constructor(options: QueueOptions = {}) {
-		const args = {
+		const {
+			appName,
+			queue,
+			driver,
+		}: QueueOptions = {
 			appName: 'laravel',
-			prefix: '_database_',
 			queue: 'default',
-			connection: {
-				socket: {
-					host: '127.0.0.1',
-					port: 6379,
+			driver: {
+				type: 'redis',
+				options: {
+					socket: {
+						host: '127.0.0.1',
+						port: 6379,
+					},
 				},
+				prefix: '_database_',
 			},
 			...options,
 		};
 
-		this.appName = args.appName.toLowerCase();
-		this.prefix = args.prefix;
-		this.queue = args.queue;
-		this.client = createClient(args.connection);
+		this.appName = appName.toLowerCase();
+		this.queue = queue;
+
+		// eslint-disable-next-line default-case
+		switch (driver.type) {
+			case 'database':
+				this.driver = new Database(this, driver);
+				break;
+			case 'redis':
+				this.driver = new Redis(this, driver);
+				break;
+		}
 	}
 
 	public async dispatch(job: Job) {
-		await this.client.connect();
-		await this.client.rPush(this.getKey(), JSON.stringify(this.payload(job)));
-		await this.client.rPush(this.getNotifyKey(), JSON.stringify(1));
-		await this.client.disconnect();
+		await this.driver.push(job);
 	}
 
-	private getKey(): string {
-		return `${this.appName}${this.prefix}queues:${this.queue}`;
-	}
-
-	private getNotifyKey(): string {
-		return `${this.getKey()}:notify`;
-	}
-
-	private payload(job: Job) {
+	payload(job: Job) {
 		return {
 			uuid: uuidv4(),
 			displayName: job.getCommandName(),
@@ -68,8 +84,6 @@ class Queue {
 				commandName: job.getCommandName(),
 				command: job.getCommand(),
 			},
-			id: uuidv4(),
-			attempts: 0,
 		};
 	}
 }

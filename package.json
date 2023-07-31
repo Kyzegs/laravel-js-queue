@@ -1,6 +1,6 @@
 {
   "name": "laravel-queues",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "",
   "main": "lib/cjs/index.js",
   "typings": "lib/typings/index.d.ts",
@@ -28,9 +28,12 @@
   "dependencies": {
     "php-serialize": "^4.1.1",
     "redis": "^4.6.7",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.3.17",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@types/node": "^20.4.5",
     "@types/uuid": "^9.0.2",
     "@typescript-eslint/eslint-plugin": ">=6.0.0",
     "@typescript-eslint/parser": ">=6.0.0",

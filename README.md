@@ -121,19 +121,44 @@ const job = new Job({
 queue.dispatch(job);
 ```
 
-### Connection options
+### Connection options for driver
 
 ```ts
 import { Queue } from 'laravel-queues';
 
 const queue = new Queue({
-    appName: 'laravel-queues',
-    connection: {
-        username: 'root',
-        password: 'laravel-queues',
-        socket: {
+    driver: {
+        type: 'redis',
+        options: {
+            socket: {
+                host: '127.0.0.1',
+                port: 6379,
+            },
+        },
+    },
+});
+```
+
+### Database driver
+
+Ensure that you have the `jobs` table in your database to make use of the database driver. You can create a migration for the jobs table by running the `php artisan queue:table` command.
+
+You'll also be required to install another dependency depending on the database you're using. For example, if you're using MySQL, you'll need to install the `mysql2` package. You can find a full rundown of the required dependencies for your database driver [here](https://typeorm.io/#installation).
+
+> ℹ️ You only have to follow step 4 of the installation guide. The other steps are already done for you.
+
+```ts
+import { Queue } from 'laravel-queues';
+
+const queue = new Queue({
+    driver: {
+        type: 'database',
+        options: {
+            type: 'mysql',
             host: 'localhost',
-            port: 6379,
+            port: 3306,
+            database: 'laravel',
+            username: 'root',
         },
     },
 });
