@@ -35,21 +35,14 @@ class Queue {
 			appName,
 			queue,
 			driver,
-		}: QueueOptions = {
+			// eslint-disable-next-line prefer-object-spread
+		} = Object.assign({}, {
 			appName: 'laravel',
 			queue: 'default',
 			driver: {
 				type: 'redis',
-				options: {
-					socket: {
-						host: '127.0.0.1',
-						port: 6379,
-					},
-				},
-				prefix: '_database_',
 			},
-			...options,
-		};
+		}, options);
 
 		this.appName = appName.toLowerCase();
 		this.queue = queue;

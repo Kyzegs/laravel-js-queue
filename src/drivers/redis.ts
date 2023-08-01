@@ -8,9 +8,9 @@ class Redis {
 	private readonly client: ReturnType<typeof createClient>;
 	private readonly prefix: string;
 
-	constructor(private readonly queue: Queue, {options, prefix}: Extract<Driver, {type: 'redis'}>) {
+	constructor(private readonly queue: Queue, {options, prefix = '_database_'}: Extract<Driver, {type: 'redis'}>) {
 		this.client = createClient(options);
-		this.prefix = prefix!;
+		this.prefix = prefix;
 	}
 
 	public async push(job: Job): Promise<void> {

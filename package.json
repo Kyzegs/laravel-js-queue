@@ -1,6 +1,6 @@
 {
   "name": "laravel-queues",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "",
   "main": "lib/cjs/index.js",
   "typings": "lib/typings/index.d.ts",
